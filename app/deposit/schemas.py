@@ -17,7 +17,7 @@ class SuccessDepositResponse(RootModel):
 class ErrorDepositResponse(BaseModel):
     error: str = Field(
         ...,
-        example="Date must be in the format dd.mm.YYYY"
+        example='Field "date". Must be in the format dd.mm.YYYY'
     )
 
 
@@ -46,7 +46,7 @@ class DepositRequestData(BaseModel):
         try:
             datetime.strptime(date_str, "%d.%m.%Y")
         except ValueError:
-            raise ValueError('Date must be in the format dd.mm.YYYY')
+            raise ValueError('Must be in the format dd.mm.YYYY')
         
         # Validator to verify that the date is not earlier than today
         # if input_date < datetime.now():

@@ -15,7 +15,7 @@ router = APIRouter()
                 "description": "Successful response",
                 "model": SuccessDepositResponse,
             },
-            422: {
+            400: {
                 "description": "Validation error response",
                 "model": ErrorDepositResponse,
             },

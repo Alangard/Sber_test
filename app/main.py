@@ -44,8 +44,15 @@ application.include_router(deposit_router, prefix=settings.api_prefix)
 @application.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     # Create custom error message
-    error_message = " ".join([e['msg'] for e in exc.errors()])
+    error_details = exc.errors()[0]
+    loc = error_details.get('loc', [])
+    msg = error_details.get('msg', '')
+    field = loc[-1] if len(loc) > 1 else 'unknown field'
+    
+    clean_msg = msg.replace('Value error,', '').strip()
+    error_message = f'Field "{field}". {clean_msg}'
+
     return JSONResponse(
-        status_code=422,
+        status_code=400,
         content=ErrorDepositResponse(error=error_message).model_dump()
     )
