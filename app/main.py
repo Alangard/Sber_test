@@ -37,7 +37,7 @@ async def lifespan(app: FastAPI):
     #     await engine.dispose()
 
 
-application = FastAPI(title="MA_test", lifespan=lifespan)
+application = FastAPI(title="Sber_test", lifespan=lifespan)
 application.include_router(deposit_router, prefix=settings.api_prefix)
 
 # Custom error handler for validation error. Works for the whole application
@@ -50,7 +50,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     field = loc[-1] if len(loc) > 1 else 'unknown field'
     
     clean_msg = msg.replace('Value error,', '').strip()
-    error_message = f'Field "{field}". {clean_msg}'
+    error_message = f'Field {field}. {clean_msg}'
 
     return JSONResponse(
         status_code=400,

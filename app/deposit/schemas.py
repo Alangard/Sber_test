@@ -5,19 +5,25 @@ from pydantic import BaseModel, ConfigDict, Field, RootModel, ValidationError, f
 from datetime import datetime
 
 class SuccessDepositResponse(RootModel):
-    root: Dict[str, float] = Field(
-        ...,
-        example={
-            "31.01.2021": 10050.0,
-            "28.02.2021": 10100.25,
-            "31.03.2021": 10150.75
-        }
-    )
+    root: Dict[str, float] = Field(...)
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "31.01.2021": 10050.0,
+                    "28.02.2021": 10100.25,
+                    "31.03.2021": 10150.75
+                }
+            ]
+    })
+
 
 class ErrorDepositResponse(BaseModel):
-    error: str = Field(
-        ...,
-        example='Field "date". Must be in the format dd.mm.YYYY'
+    error: str = Field(...)
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [{'error': 'Field date. Must be in the format dd.mm.YYYY'}]
+        }
     )
 
 
