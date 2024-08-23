@@ -20,7 +20,6 @@ class GlobalSettings(BaseSettings):
 
     DOMAIN_NAME: str = os.environ.get("DOMAIN_NAME", "http://127.0.0.1:8000")
 
-
     api_prefix: str = "/api/v1"
 
 

@@ -1,10 +1,16 @@
 from typing import Union
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from app.deposit.schemas import DepositRequestData, SuccessDepositResponse, ErrorDepositResponse
+from app.deposit.schemas import (
+    DepositRequestData,
+    SuccessDepositResponse,
+    ErrorDepositResponse,
+)
 
 
-async def calculate_deposit_service(deposit_data: DepositRequestData) -> Union[SuccessDepositResponse, ErrorDepositResponse]:
+async def calculate_deposit_service(
+    deposit_data: DepositRequestData,
+) -> Union[SuccessDepositResponse, ErrorDepositResponse]:
 
     result = {}
     current_amount = deposit_data.amount
@@ -18,7 +24,3 @@ async def calculate_deposit_service(deposit_data: DepositRequestData) -> Union[S
         current_date = current_date.strftime("%d.%m.%Y")
 
     return SuccessDepositResponse(root=result)
-
-    
-
-    

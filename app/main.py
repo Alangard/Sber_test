@@ -6,10 +6,10 @@ from fastapi.responses import JSONResponse
 
 
 from app.config import settings
+
 # from app.database import BaseModel, engine
 from app.deposit.router import router as deposit_router
 from app.deposit.schemas import ErrorDepositResponse
-
 
 
 @asynccontextmanager
@@ -23,36 +23,28 @@ async def lifespan(app: FastAPI):
     - Disposes all database connections.
     - Deletes bot webhook and commands.
     - Closes aiohttp session
-    """ 
+    """
 
     yield
-
-    # # When an appliction is created
-    # async with engine.begin() as connection:
-    #     # Create tables
-    #     await connection.run_sync(BaseModel.metadata.create_all)
-    # try:
-    #     yield
-    # finally:
-    #     await engine.dispose()
 
 
 application = FastAPI(title="Sber_test", lifespan=lifespan)
 application.include_router(deposit_router, prefix=settings.api_prefix)
 
-# Custom error handler for validation error. Works for the whole application
+
+# Custom error handler for validation error.
+# !Works for the whole application!
 @application.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     # Create custom error message
     error_details = exc.errors()[0]
-    loc = error_details.get('loc', [])
-    msg = error_details.get('msg', '')
-    field = loc[-1] if len(loc) > 1 else 'unknown field'
-    
-    clean_msg = msg.replace('Value error,', '').strip()
-    error_message = f'Field {field}. {clean_msg}'
+    loc = error_details.get("loc", [])
+    msg = error_details.get("msg", "")
+    field = loc[-1] if len(loc) > 1 else "unknown field"
+
+    clean_msg = msg.replace("Value error,", "").strip()
+    error_message = f"Field {field}. {clean_msg}"
 
     return JSONResponse(
-        status_code=400,
-        content=ErrorDepositResponse(error=error_message).model_dump()
+        status_code=400, content=ErrorDepositResponse(error=error_message).model_dump()
     )
